@@ -103,4 +103,25 @@ export const GUIDE: GuideSection[] = [
     inVoca: 'Choices → Choose shows 2–4 options full screen, always with “None of these” and “Something else”.',
     references: [REF.cannella2005],
   },
+  {
+    emoji: '📲',
+    title: 'Messages connect people',
+    research:
+      'Young people who use AAC described messaging and social media as a way to keep in touch on their own terms, and adults who use AAC reported that it widened their social world. Studies are small and qualitative.',
+    tryThis: [
+      'Send a short message together to someone the person likes, such as a grandparent.',
+      'Read replies aloud and build the answer together; there is no rush.',
+    ],
+    inVoca: 'Tap Send on a sentence to share it to WhatsApp or another app. On the Type tab, “Paste and read” reads a copied message aloud.',
+    references: [REF.hynan2014, REF.caron2015],
+  },
+  {
+    emoji: '⌨️',
+    title: 'Suggestions help some typists',
+    research:
+      'Word prediction can save keystrokes, but choosing from a list also takes time and attention, so it does not speed everyone up.',
+    tryThis: ['Try suggestions on and off and notice which feels easier.', 'Keep the list short; Voca shows a few words at a time.'],
+    inVoca: 'Settings → General → Typing suggestions. Suggestions only appear on the Type tab, so symbol buttons never move.',
+    references: [REF.koester1996],
+  },
 ];

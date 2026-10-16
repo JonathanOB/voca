@@ -22,18 +22,59 @@ export interface ReminderJob {
 
 const supported = Platform.OS === 'ios' || Platform.OS === 'android';
 
+type LocalNotifications = Pick<
+  typeof NotificationsModule,
+  | 'setNotificationHandler'
+  | 'setNotificationChannelAsync'
+  | 'getPermissionsAsync'
+  | 'requestPermissionsAsync'
+  | 'getAllScheduledNotificationsAsync'
+  | 'cancelScheduledNotificationAsync'
+  | 'scheduleNotificationAsync'
+  | 'getLastNotificationResponse'
+  | 'addNotificationResponseReceivedListener'
+  | 'AndroidImportance'
+  | 'SchedulableTriggerInputTypes'
+>;
+
+/* eslint-disable @typescript-eslint/no-require-imports */
+/**
+ * Only the local-notification parts, loaded file by file. Expo Go on Android lacks the
+ * push "topic subscription" native module, which makes the package entry fail to load
+ * even though local notifications work. Release and development builds use the full package.
+ */
+function localOnly(): LocalNotifications {
+  return {
+    ...require('expo-notifications/build/NotificationsHandler'),
+    ...require('expo-notifications/build/NotificationPermissions'),
+    ...require('expo-notifications/build/NotificationsEmitter'),
+    ...require('expo-notifications/build/Notifications.types'),
+    ...require('expo-notifications/build/NotificationChannelManager.types'),
+    ...require('expo-notifications/build/setNotificationChannelAsync'),
+    ...require('expo-notifications/build/getAllScheduledNotificationsAsync'),
+    ...require('expo-notifications/build/cancelScheduledNotificationAsync'),
+    ...require('expo-notifications/build/scheduleNotificationAsync'),
+  };
+}
+
 // Loaded on first use, so a build without the notifications module still starts (reminders just turn off).
-let loaded: typeof NotificationsModule | null | undefined;
-function notifications(): typeof NotificationsModule | null {
+let loaded: LocalNotifications | null | undefined;
+function notifications(): LocalNotifications | null {
   if (loaded !== undefined) return loaded;
+  loaded = null;
+  if (!supported) return loaded;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    loaded = supported ? (require('expo-notifications') as typeof NotificationsModule) : null;
+    loaded = require('expo-notifications') as typeof NotificationsModule;
   } catch {
-    loaded = null;
+    try {
+      loaded = localOnly();
+    } catch {
+      loaded = null;
+    }
   }
   return loaded;
 }
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 let initialised = false;
 export function initNotifications() {
@@ -49,12 +90,21 @@ export function initNotifications() {
   }
 }
 
-async function ensureChannel(Notifications: typeof NotificationsModule) {
-  if (Platform.OS !== 'android') return;
-  await Notifications.setNotificationChannelAsync(CHANNEL, {
-    name: i18n.t('reminders.channel'),
-    importance: Notifications.AndroidImportance.DEFAULT,
-  });
+/**
+ * Voca's own Android channel, so families can tune reminder sounds separately.
+ * Returns the channel to use, or undefined for the default channel (Expo Go cannot create channels).
+ */
+async function ensureChannel(Notifications: LocalNotifications): Promise<string | undefined> {
+  if (Platform.OS !== 'android') return undefined;
+  try {
+    await Notifications.setNotificationChannelAsync(CHANNEL, {
+      name: i18n.t('reminders.channel'),
+      importance: Notifications.AndroidImportance.DEFAULT,
+    });
+    return CHANNEL;
+  } catch {
+    return undefined;
+  }
 }
 
 /** Asks for permission when a reminder is first set. Resolves false if notifications are off. */
@@ -80,7 +130,7 @@ export async function syncReminders(jobs: ReminderJob[], lang: string) {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
     await Promise.all(scheduled.filter((n) => n.identifier.startsWith(PREFIX)).map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier)));
     if (!jobs.length || !(await Notifications.getPermissionsAsync()).granted) return;
-    await ensureChannel(Notifications);
+    const channelId = await ensureChannel(Notifications);
     for (const job of jobs) {
       const at = reminderAt(job.time, job.before);
       if (!at) continue;
@@ -92,12 +142,24 @@ export async function syncReminders(jobs: ReminderJob[], lang: string) {
           body: job.before ? i18n.t('reminders.notifSoon', { label: job.label, time }) : time,
           data: { url: '/my-day' },
         },
-        trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: at.hour, minute: at.minute, channelId: CHANNEL },
+        trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: at.hour, minute: at.minute, channelId },
       });
     }
   } catch {
     // Reminders are a convenience; never let them break the app.
   }
+}
+
+// Asks the reminder sync to run again (e.g. once notifications have just been allowed).
+const resyncListeners = new Set<() => void>();
+export function requestReminderResync() {
+  resyncListeners.forEach((l) => l());
+}
+export function onReminderResync(listener: () => void) {
+  resyncListeners.add(listener);
+  return () => {
+    resyncListeners.delete(listener);
+  };
 }
 
 /** Opens Voca's My Day when a reminder is tapped. */

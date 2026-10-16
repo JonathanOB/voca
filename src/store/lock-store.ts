@@ -35,6 +35,11 @@ export function markUnlocked() {
   expiry = setTimeout(lockNow, UNLOCK_MS);
 }
 
+/** A grown-up is still busy in a protected screen: restart the unlock timer. */
+export function extendUnlock() {
+  if (useLock.getState().unlocked) markUnlocked();
+}
+
 export function lockNow() {
   if (expiry) clearTimeout(expiry);
   expiry = null;
@@ -83,7 +88,14 @@ export function useLocked() {
   return pinOn && !unlocked;
 }
 
-// Lock again whenever Voca goes to the background.
+// Lock again when Voca has been in the background for more than a minute. A quick trip to the
+// device settings (e.g. to download a voice) does not lock a grown-up out mid-task.
+export const BACKGROUND_GRACE_MS = 60_000;
+let leftAt: number | null = null;
 AppState.addEventListener('change', (state) => {
-  if (state === 'background') lockNow();
+  if (state === 'background') leftAt = Date.now();
+  else if (state === 'active' && leftAt !== null) {
+    if (Date.now() - leftAt > BACKGROUND_GRACE_MS) lockNow();
+    leftAt = null;
+  }
 });

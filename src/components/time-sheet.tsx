@@ -13,7 +13,7 @@ import { IconButton } from './icon-button';
 import { InfoBanner } from './layout';
 import { PushButton } from './push-button';
 import { Sheet } from './sheet';
-import { REMIND_CHOICES, ensureReminderPermission } from '@/services/reminders';
+import { REMIND_CHOICES, ensureReminderPermission, requestReminderResync } from '@/services/reminders';
 import { addMinutes, formatTime, parseTime, toHHMM, type HourMinute } from '@/services/time';
 import { toast } from '@/store/ui-store';
 import { RADIUS, useTheme } from '@/theme';
@@ -78,6 +78,8 @@ function TimeSheetBody({
     }
     onSave(result);
     onClose();
+    // Permission may have only just been granted; make sure reminders are (re)scheduled.
+    setTimeout(requestReminderResync, 300);
   };
 
   return (

@@ -1,7 +1,7 @@
 import { buildStandardContent } from '@/db/seed';
 import { SCHEMA_VERSION } from '@/db/schema';
 import { DEFAULT_SETTINGS } from '@/store/settings';
-import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, referencedMedia, validateShape, type BackupFile } from './backup';
+import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, referencedMedia, restoredSettings, validateShape, type BackupFile } from './backup';
 
 function sample(): BackupFile {
   const library = buildStandardContent(1);
@@ -51,5 +51,17 @@ describe('backup validation', () => {
     const b = sample();
     b.data.library.items.push({ id: 'x', boardId: 'std:board:core', buttonId: 'does-not-exist', position: 99, hidden: false });
     expect(validateShape(b)).toEqual({ ok: false, error: 'invalid' });
+  });
+});
+
+describe('restoring settings', () => {
+  it('keeps this device’s voice and carer PIN, not the backup’s', () => {
+    const b = sample();
+    b.data.settings = { ...DEFAULT_SETTINGS, voiceId: 'their-voice', pinHash: 'their-pin', language: 'es' };
+    const current = { ...DEFAULT_SETTINGS, voiceId: 'my-voice', pinHash: 'my-pin' };
+    const s = restoredSettings(b, current);
+    expect(s.language).toBe('es');
+    expect(s.voiceId).toBe('my-voice');
+    expect(s.pinHash).toBe('my-pin');
   });
 });

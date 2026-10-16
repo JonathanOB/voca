@@ -183,7 +183,8 @@ function TodayPlanner() {
                   {isNow ? <Badge text={t('schedule.now')} tone="primary" /> : isNext ? <Badge text={t('schedule.next')} tone="soft" /> : step.done ? <Badge text={t('schedule.done')} tone="success" /> : null}
                 </Pressable>
                 {editing ? (
-                  <View style={{ flexDirection: 'row', gap: 4 }}>
+                  // On phones the edit buttons get their own line so the activity name keeps its width.
+                  <View style={[styles.editRow, !theme.isTablet && styles.editRowPhone]}>
                     <IconButton icon={step.remindBefore !== null && step.remindBefore !== undefined ? 'alarm' : 'time-outline'} label={t('reminders.title')} size={36} variant="soft" onPress={() => setTiming(step)} />
                     <IconButton icon="arrow-up" label={t('common.moveUp')} size={36} variant="soft" disabled={i === 0} onPress={() => move(i, -1)} />
                     <IconButton icon="arrow-down" label={t('common.moveDown')} size={36} variant="soft" disabled={i === steps.length - 1} onPress={() => move(i, 1)} />
@@ -234,7 +235,9 @@ const styles = StyleSheet.create({
   bar: { flex: 1, height: 10, borderRadius: 5, overflow: 'hidden' },
   fill: { height: 10, borderRadius: 5 },
   allDone: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: RADIUS.lg, marginBottom: 12 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 10, borderRadius: RADIUS.lg, borderWidth: 2.5 },
+  row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 12, padding: 10, borderRadius: RADIUS.lg, borderWidth: 2.5 },
+  editRow: { flexDirection: 'row', gap: 4 },
+  editRowPhone: { width: '100%', justifyContent: 'flex-end', gap: 10 },
   rowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52 },
   check: { width: 44, height: 44, borderRadius: 22, borderWidth: 3, alignItems: 'center', justifyContent: 'center' },
 });

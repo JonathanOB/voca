@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, type LayoutRectangle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { AppText } from './app-text';
 import { SymbolImage } from './symbol-image';
@@ -123,16 +123,18 @@ function DragChip({
 
   const style = useAnimatedStyle(() => ({
     transform: [{ translateX: tx.get() }, { translateY: ty.get() }, { scale: 1 + lift.get() * 0.08 }],
-    zIndex: lift.get() > 0 ? 10 : 0,
     elevation: lift.get() > 0 ? 8 : 0,
     opacity: 1 - lift.get() * 0.1,
   }));
+  // The lifted chip draws above its neighbours.
+  const raise = useAnimatedStyle(() => ({ zIndex: lift.get() > 0 ? 10 : 0 }));
 
   return (
+    // The outer view holds the chip's place in the row; the inner one follows the finger.
+    // Chips snap to their new place: a layout transition here left chips overlapping after a drop.
+    <Animated.View onLayout={(e) => onLayout(e.nativeEvent.layout)} style={raise}>
     <GestureDetector gesture={gesture}>
       <Animated.View
-        layout={theme.reducedMotion ? undefined : LinearTransition.duration(180)}
-        onLayout={(e) => onLayout(e.nativeEvent.layout)}
         style={[
           styles.chip,
           {
@@ -165,6 +167,7 @@ function DragChip({
         </AppText>
       </Animated.View>
     </GestureDetector>
+    </Animated.View>
   );
 }
 

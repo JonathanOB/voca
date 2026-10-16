@@ -51,7 +51,9 @@ npx expo export --platform android --platform ios   # bundles must build cleanly
 - Icon: `assets/images/icon.png` (1024², opaque). Regenerate everything with `npm run build:icons`.
 - Screenshots: phone and tablet, light and dark, showing Home, a board with a sentence, My Day, Choices and Feelings. Use English plus at least one other language.
 - Age rating: a communication tool with no user-to-user interaction, no ads and no purchases. Answer the family/children questionnaires honestly: the app is suitable for children, but it is not a "kids category" app unless that is decided deliberately.
-- Permissions: camera, photos and microphone are asked for only when used, with purpose strings set in `app.json`. Location and overlay permissions are blocked on Android.
+- Permissions: camera, photos, microphone and notifications are asked for only when used, with purpose strings set in `app.json`. Location and overlay permissions are blocked on Android.
+- Exact alarms (Android): `SCHEDULE_EXACT_ALARM` is declared so reminders fire on time. Google Play only allows it for alarm/calendar-style features; schedule reminders qualify, but say so in the Play Console declaration. Without the permission (Android 14+ denies it by default) reminders still fire, a few minutes late. If Play rejects it, remove the permission from `app.json`.
+- Sharing to WhatsApp uses the app's public `whatsapp://send?text=` link and the system share sheet; no WhatsApp API or account is involved, so no extra disclosure is needed beyond "messages are handed to the app you choose".
 
 ## 5. Real-device test pass (brief §19)
 
@@ -63,3 +65,7 @@ npx expo export --platform android --platform ios   # bundles must build cleanly
 - [ ] Force-quit during onboarding and while building a sentence; both resume.
 - [ ] Upgrade from the previous store build: content migrates and nothing user-made is lost.
 - [ ] Rotation and split view on tablets, with *Same layout on every screen* on and off.
+- [ ] Carer PIN: set in onboarding, enter wrong and right PINs, "Forgot PIN?", lock after more than a minute in the background.
+- [ ] Touch help with a real tremor or a person who double-taps: run "Find my settings" and check hold-to-select with VoiceOver/TalkBack on (it should switch itself off).
+- [ ] Reminders: set one for a few minutes ahead, lock the phone, and check it arrives (also after a restart, and on iOS).
+- [ ] Send to WhatsApp on a phone with WhatsApp installed; "Paste and read" with a copied WhatsApp message.

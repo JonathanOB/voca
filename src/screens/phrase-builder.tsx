@@ -106,6 +106,9 @@ export function PhraseBuilder() {
   };
 
   const selIndex = chips.findIndex((c) => c.key === selected);
+  // Word tiles fill the row: 4 across on phones, 6 on tablets.
+  const gridCols = theme.isTablet ? 6 : 4;
+  const tileW = Math.floor((Math.min(theme.width, 760) - 40 - 10 * (gridCols - 1)) / gridCols);
 
   const save = async () => {
     if (!text) return alertDialog(t('phrases.required'));
@@ -224,7 +227,7 @@ export function PhraseBuilder() {
             <TextField value={query} onChangeText={setQuery} placeholder={t('phrases.search')} accessibilityLabel={t('phrases.search')} returnKeyType="search" />
             <View style={styles.grid}>
               {sources.map((b) => (
-                <Tile key={b.id} label={L.buttonLabel(b)} symbol={b.symbol} photo={b.photo} type={b.type} width={theme.isTablet ? 104 : 86} display={display} onPress={() => addButton(b)} />
+                <Tile key={b.id} label={L.buttonLabel(b)} symbol={b.symbol} photo={b.photo} type={b.type} width={tileW} display={display} onPress={() => addButton(b)} />
               ))}
             </View>
 

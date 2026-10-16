@@ -74,6 +74,8 @@ export function BoardView({ boardId, hideTitle, noSentence, header, footer, high
 
   const cols = width ? gridColumns(width, settings.gridSize, theme.isTablet, GAP, settings.fixedGrid) : 3;
   const tileW = width ? (width - GAP * (cols - 1)) / cols : 0;
+  // Three edit buttons (move, hide, move) must fit under one tile without overlapping the next.
+  const editBtn = Math.max(26, Math.min(34, Math.floor((tileW - 2 * 4) / 3) - 3));
   const effectiveTap = board?.tapAction ?? settings.tapAction;
   const showSentence = !noSentence && settings.showSentence && effectiveTap !== 'speak';
   const showQuick = !noSentence && settings.showQuickWords && board?.section !== 'safety';
@@ -243,15 +245,15 @@ export function BoardView({ boardId, hideTitle, noSentence, header, footer, high
                   footer={
                     editing ? (
                       <View style={styles.editRow}>
-                        <IconButton icon="chevron-back" label={t('board.moveEarlier')} size={34} variant="soft" onPress={() => useApp.getState().moveItem(boardId, item.id, -1)} />
+                        <IconButton icon="chevron-back" label={t('board.moveEarlier')} size={editBtn} variant="soft" onPress={() => useApp.getState().moveItem(boardId, item.id, -1)} />
                         <IconButton
                           icon={item.hidden ? 'eye-outline' : 'eye-off-outline'}
                           label={item.hidden ? t('board.showHere') : t('board.hideHere')}
-                          size={34}
+                          size={editBtn}
                           variant="soft"
                           onPress={() => useApp.getState().setItemHidden(boardId, item.id, !item.hidden)}
                         />
-                        <IconButton icon="chevron-forward" label={t('board.moveLater')} size={34} variant="soft" onPress={() => useApp.getState().moveItem(boardId, item.id, 1)} />
+                        <IconButton icon="chevron-forward" label={t('board.moveLater')} size={editBtn} variant="soft" onPress={() => useApp.getState().moveItem(boardId, item.id, 1)} />
                       </View>
                     ) : null
                   }
@@ -379,6 +381,6 @@ function Pulse({ active }: { active: boolean }) {
 const styles = StyleSheet.create({
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 14 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: GAP },
-  editRow: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 6 },
+  editRow: { flexDirection: 'row', justifyContent: 'center', gap: 4, marginTop: 6 },
   hiddenBadge: { position: 'absolute', top: 6, left: 6, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
 });

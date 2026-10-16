@@ -26,7 +26,8 @@ export function TouchSettings() {
   const [count, setCount] = useState(0);
   const secs = (ms: number) => t('touch.seconds', { n: (ms / 1000).toLocaleString() });
   const tryButtons = TRY_KEYS.map((k) => buttons[stdButtonId(k)]).filter(Boolean);
-  const tileW = Math.min(120, (Math.min(theme.width, 720) - 32 - 24) / 3);
+  // Three tiles in a row inside the screen padding (16 on phones, 28 on tablets); floor to avoid wrapping.
+  const tileW = Math.floor(Math.min(120, (Math.min(theme.width, 720) - (theme.isTablet ? 56 : 32) - 24) / 3 - 1));
 
   return (
     <Screen>

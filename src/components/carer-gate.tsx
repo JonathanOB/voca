@@ -6,13 +6,14 @@ import { View } from 'react-native';
 import { AppText } from './app-text';
 import { Mascot } from './mascot';
 import { PushButton } from './push-button';
-import { requireCarer, useLocked } from '@/store/lock-store';
+import { extendUnlock, requireCarer, useLocked } from '@/store/lock-store';
 import { useTheme } from '@/theme';
 
 /** Shows its children only when the carer lock is off or unlocked. */
 export function CarerGate({ children, showBack = true }: { children: ReactNode; showBack?: boolean }) {
   const locked = useLocked();
-  if (!locked) return <>{children}</>;
+  // While unlocked, every touch here keeps it unlocked, so it never locks under a grown-up's fingers.
+  if (!locked) return <View style={{ flex: 1 }} onTouchStart={extendUnlock}>{children}</View>;
   return <LockedScreen showBack={showBack} />;
 }
 

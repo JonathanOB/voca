@@ -228,10 +228,12 @@ export function restoreMedia(backup: BackupFile) {
 }
 
 export function restoredSettings(backup: BackupFile, current: Settings): Settings {
-  // Keep device-specific choices (voice IDs differ between devices) and telemetry consent.
+  // Keep device-specific choices (voice IDs differ between devices), the carer PIN on this
+  // device, and telemetry consent.
   return normalizeSettings({
     ...backup.data.settings,
     voiceId: current.voiceId,
+    pinHash: current.pinHash,
     telemetryConsent: current.telemetryConsent,
     telemetryLastSent: current.telemetryLastSent,
     onboardingDone: true,

@@ -62,6 +62,14 @@ Rules for vocabulary strings: no brackets (they are read aloud), keep words shor
 
 Every reference in `research.ts` and `guide.ts` was checked against Crossref or PubMed. Do not add a citation that has not been looked up; if evidence is uncertain, say so in `limitations`. [`RESEARCH.md`](RESEARCH.md) explains how the boards follow the evidence.
 
+## Carer lock, touch help, word forms, reminders
+
+- **Carer lock** (`src/store/lock-store.ts`, `components/pin-host.tsx`, `components/carer-gate.tsx`): wrap anything that changes content in `guarded(() => …)` or `await requireCarer()`; editor routes and Settings are wrapped in `<CarerGate>`. An unlock lasts 5 minutes from the last touch and survives a short trip out of the app (under a minute). The PIN is a helper, not security: "Forgot PIN?" asks a sum and lets the carer set a new one.
+- **Touch help** (`hooks/use-touch-select.ts`, pure rules in `services/touch-rules.ts`): every `Tile` and the always-there words use it. Hold-to-select is skipped while a screen reader is on. `services/touch-calibration.ts` turns the tapping game into suggestions.
+- **Word forms** (`src/i18n/forms/`): custom forms typed on a button win; then the curated table for standard words in that language (`tables.ts`); then English rules (`english.ts`). Add a language's forms to `tables.ts`; `tables.test.ts` checks every key is a real standard button.
+- **Reminders** (`services/reminders.ts`, `hooks/use-reminder-sync.ts`): schedule steps carry `time` (HH:MM) and `remindBefore` (minutes or null). All Voca notifications are cancelled and re-created when the schedule changes. In Expo Go on Android, `expo-notifications` fails to load its push module, so Voca loads only the local-notification files; development and release builds use the package normally. Android's own reminder channel cannot be created in Expo Go, so the default channel is used there.
+- **Typing suggestions** (`services/predict.ts`): a small word-pair model per language stored in the `kv` table (`lm:<lang>`), plus the bundled vocabulary and saved phrases. Chinese and Japanese are left to the device keyboard.
+
 ## Testing on a device
 
 - Android emulator: `npx expo start`, then press `a`, or open `exp://10.0.2.2:8081` in Expo Go.

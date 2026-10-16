@@ -142,6 +142,20 @@ export const REF = {
     citation: 'Forbes, A. S., & Yun, J. (2023). Visual supports for children with autism in physical activity. Adapted Physical Activity Quarterly, 40(4), 781–806.',
     url: 'https://pubmed.ncbi.nlm.nih.gov/36898384/',
   },
+  hynan2014: {
+    citation:
+      'Hynan, A., Murray, J., & Goldbart, J. (2014). ‘Happy and excited’: Perceptions of using digital technology and social media by young people who use augmentative and alternative communication. Child Language Teaching and Therapy, 30(2), 175–186.',
+    url: 'https://doi.org/10.1177/0265659013519258',
+  },
+  caron2015: {
+    citation:
+      'Caron, J., & Light, J. (2015). “My world has expanded even though I’m stuck at home”: Experiences of individuals with amyotrophic lateral sclerosis who use augmentative and alternative communication and social media. American Journal of Speech-Language Pathology, 24(4), 680–695.',
+    url: 'https://doi.org/10.1044/2015_AJSLP-15-0010',
+  },
+  koester1996: {
+    citation: 'Koester, H. H., & Levine, S. (1996). Effect of a word prediction feature on user performance. Augmentative and Alternative Communication, 12(3), 155–168.',
+    url: 'https://doi.org/10.1080/07434619612331277608',
+  },
 } satisfies Record<string, Reference>;
 
 const MODEL_TIP =

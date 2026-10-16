@@ -163,7 +163,7 @@ export function TouchCheckScreen() {
           <AppText variant="body" muted center style={{ maxWidth: 420 }}>
             {t('touch.calIntro')}
           </AppText>
-          <PushButton title={t('touch.calStart')} iconRight="arrow-forward" onPress={start} />
+          <PushButton title={t('touch.calStart')} iconRight="arrow-forward" onPress={start} style={{ alignSelf: 'center' }} />
           <View style={{ maxWidth: 420, alignSelf: 'stretch' }}>
             <InfoBanner text={t('touch.a11yNote')} icon="accessibility-outline" />
           </View>

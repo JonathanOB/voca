@@ -3,7 +3,7 @@
  * The final wording must be reviewed before public release (brief §18) —
  * see docs/RELEASE.md. Update LAST_UPDATED when it changes.
  */
-export const LAST_UPDATED = '15 October 2026';
+export const LAST_UPDATED = '16 October 2026';
 export const SUPPORT_CONTACT = 'Support contact to be added before public release.';
 
 export interface LegalSection {
@@ -26,7 +26,19 @@ export const PRIVACY: LegalSection[] = [
   },
   {
     heading: 'Permissions',
-    body: 'Voca only asks for permissions when you choose a feature that needs them: the camera when you take a photo for a button, your photos when you choose a picture, and the microphone when you record a voice for a button. You can refuse, and the rest of Voca keeps working.',
+    body: 'Voca only asks for permissions when you choose a feature that needs them: the camera when you take a photo for a button, your photos when you choose a picture, the microphone when you record a voice for a button, and notifications when you set a reminder on the schedule. You can refuse, and the rest of Voca keeps working.',
+  },
+  {
+    heading: 'Reminders',
+    body: 'Schedule reminders are set up on your device by your device’s own notification system. They contain the name of the activity and its time, and nothing is sent to a server.',
+  },
+  {
+    heading: 'Sending and reading messages',
+    body: 'When you choose Send, Voca hands the message to the app you pick, such as WhatsApp or your messaging app. What happens next is covered by that app’s privacy policy. Voca only reads your clipboard when you tap “Paste and read”, and does not keep what it reads.',
+  },
+  {
+    heading: 'Typing suggestions and the carer PIN',
+    body: 'If “Learn from what I type” is on, Voca remembers words you type and speak, on this device only, to suggest them later. You can switch this off or clear the learned words in Settings. The carer PIN is stored on this device in a scrambled (hashed) form and is never sent anywhere.',
   },
   {
     heading: 'Usage data',
