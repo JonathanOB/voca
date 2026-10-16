@@ -1,0 +1,103 @@
+{
+  "expo": {
+    "name": "Voca",
+    "slug": "voca",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/images/icon.png",
+    "scheme": "voca",
+    "userInterfaceStyle": "automatic",
+    "description": "Free, private, offline AAC communication and visual supports by AppZano.",
+    "ios": {
+      "bundleIdentifier": "com.appzano.voca",
+      "supportsTablet": true,
+      "requireFullScreen": false,
+      "infoPlist": {
+        "CADisableMinimumFrameDurationOnPhone": true,
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": []
+      }
+    },
+    "android": {
+      "package": "com.appzano.voca",
+      "adaptiveIcon": {
+        "backgroundColor": "#EEF0FB",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "blockedPermissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "Voca",
+      "backgroundColor": "#EEF0FB"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "headers": {
+            "Cross-Origin-Embedder-Policy": "credentialless",
+            "Cross-Origin-Opener-Policy": "same-origin"
+          }
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#EEF0FB",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 180,
+          "dark": {
+            "backgroundColor": "#14112B",
+            "image": "./assets/images/splash-icon.png"
+          }
+        }
+      ],
+      "expo-sqlite",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Voca uses the microphone only when you choose to record your own voice for a button."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Voca uses your photos only when you choose a picture for a button.",
+          "cameraPermission": "Voca uses the camera only when you take a picture for a button.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-sharing",
+      [
+        "expo-localization",
+        {
+          "supportsRTL": false
+        }
+      ],
+      "expo-asset",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#6C5CE7"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "telemetryEndpoint": ""
+    }
+  }
+}
