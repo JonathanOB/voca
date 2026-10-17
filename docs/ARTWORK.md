@@ -1,14 +1,13 @@
 # Artwork
 
-## Current status: interim artwork
+## Current status
 
-The brief (§10) requires an original, reviewed Voca image for every standard button. That library does not exist yet. Until it does, buttons use **Microsoft Fluent Emoji 3D** images (MIT licence, via `@lobehub/fluent-emoji-3d`), which match the soft 3D look of the design and are bundled so the app works offline.
+Buttons use **Microsoft Fluent Emoji 3D** images (MIT licence, via `@lobehub/fluent-emoji-3d`), bundled so the app works offline. The decision on 17 October 2026 was to keep them for the first release, replacing the brief's original-artwork requirement (§10).
 
-- Every image, its source, licence and the files that use it are listed in [`artwork-manifest.json`](artwork-manifest.json). Each interim entry has `reviewStatus: "interim — replace with original Voca artwork before public release"`.
+- Every image, its source, licence and the files that use it are listed in [`artwork-manifest.json`](artwork-manifest.json).
 - The Fluent licence notice is shown in the app under *About & Legal → Credits*.
-- The app icon, splash and mascot ("Vo") are original Voca drawings in `src/components/mascot.tsx` and `scripts/build-icons.js`.
-
-**Release blocker:** brief §19 requires every standard image to be original and approved before public release.
+- The app icon comes from `assets/brand/voca-icon.jpg` (`npm run build:icons`); the in-app mascot ("Vo") is drawn in `src/components/mascot.tsx`.
+- To swap in original images later, follow the steps below; content and user data are unaffected.
 
 ## How images are wired
 

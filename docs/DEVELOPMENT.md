@@ -1,6 +1,6 @@
 # Developing Voca
 
-The product brief is [`readme.md`](../readme.md). This page covers how the code is organised and how to work on it.
+The product brief is [`BRIEF.md`](BRIEF.md) ("brief §N" in code comments refers to its sections). This page covers how the code is organised and how to work on it.
 
 ## Stack
 
@@ -16,7 +16,7 @@ npx jest                # unit tests
 npx expo lint           # lint
 npx expo-doctor         # dependency and config checks
 npm run build:symbols   # rebuild bundled symbols + docs/artwork-manifest.json
-npm run build:icons     # rebuild app icon, adaptive icon, splash and favicon
+npm run build:icons     # rebuild icons from assets/brand/voca-icon.jpg (needs Python + Pillow)
 ```
 
 Expo Go runs the app because only bundled Expo modules are used. Add `expo-dev-client` and use a development build if you add a library with its own native code.

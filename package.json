@@ -67,7 +67,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "build:symbols": "node ./scripts/build-symbols.js",
-    "build:icons": "node ./scripts/build-icons.js"
+    "build:icons": "python ./scripts/build-icons.py"
   },
   "private": true,
   "jest": {

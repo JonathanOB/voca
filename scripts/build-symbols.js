@@ -180,7 +180,7 @@ function copySymbol(id, opts) {
       originalFile: file,
       licence: 'MIT',
       copyright: 'Copyright (c) Microsoft Corporation',
-      reviewStatus: 'interim — replace with original Voca artwork before public release',
+      reviewStatus: 'approved for release (decision 2026-10-17)',
     };
   }
   const outName = `${id}${ext}`;

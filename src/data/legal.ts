@@ -4,7 +4,7 @@
  * see docs/RELEASE.md. Update LAST_UPDATED when it changes.
  */
 export const LAST_UPDATED = '16 October 2026';
-export const SUPPORT_CONTACT = 'Support contact to be added before public release.';
+export const SUPPORT_CONTACT = 'hello@appzano.com';
 
 export interface LegalSection {
   heading: string;

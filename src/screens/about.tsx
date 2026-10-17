@@ -41,9 +41,11 @@ export function AboutScreen() {
         <AppText>{DISCLAIMER}</AppText>
       </Card>
       <SectionHeader title={t('about.contact')} />
-      <AppText muted selectable>
-        {SUPPORT_CONTACT}
-      </AppText>
+      <Pressable onPress={() => Linking.openURL(`mailto:${SUPPORT_CONTACT}`).catch(() => {})} accessibilityRole="link" hitSlop={8}>
+        <AppText variant="bodyStrong" color={theme.colors.primary} selectable>
+          {SUPPORT_CONTACT}
+        </AppText>
+      </Pressable>
       <View style={{ marginTop: 16 }}>
         <InfoBanner text={t('about.englishOnly')} />
       </View>

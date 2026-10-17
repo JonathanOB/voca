@@ -72,5 +72,5 @@ Sources: [AssistiveWare vocabularies](https://www.assistiveware.com/vocabularies
 ## 5. Before release
 
 - Have a speech and language therapist review the guide, the tips and the More core word choices.
-- Replace the interim Fluent 3D artwork with original Voca artwork (brief §10), keeping the same IDs.
+- Artwork: the Fluent 3D symbols are kept for the first release (decision 17 Oct 2026); originals can replace them later with the same IDs.
 - Re-check vendor feature claims if they are ever used in marketing.
